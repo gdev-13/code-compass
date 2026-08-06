@@ -1,4 +1,4 @@
-# 🏗️ Arquitetura do Sistema - Code Compass
+# 🏗️ Arquitetura do Sistema
 
 ## 1. Introdução
 
