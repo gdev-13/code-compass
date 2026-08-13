@@ -22,6 +22,11 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	
 	public UserResponse createUser (CreateUserRequest request) {
+		Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
+		if(existingUser.isPresent()) {
+			throw new RuntimeException("E-mail já cadastrado");
+		}
+	
 		User user = new User();
 		user.setName(request.getName());
 		user.setEmail(request.getEmail());
