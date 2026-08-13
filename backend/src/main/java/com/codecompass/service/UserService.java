@@ -10,6 +10,8 @@ import com.codecompass.dto.user.LoginRequest;
 import com.codecompass.dto.user.LoginResponse;
 import com.codecompass.dto.user.UserResponse;
 import com.codecompass.entity.User;
+import com.codecompass.exception.EmailAlreadyExistsException;
+import com.codecompass.exception.InvalidCredentialsException;
 import com.codecompass.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class UserService {
 	public UserResponse createUser (CreateUserRequest request) {
 		Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
 		if(existingUser.isPresent()) {
-			throw new RuntimeException("E-mail já cadastrado");
+			throw new EmailAlreadyExistsException("E-mail já cadastrado");
 		}
 	
 		User user = new User();
@@ -46,7 +48,7 @@ public class UserService {
 	public LoginResponse login (LoginRequest request) {
 		Optional<User> user = userRepository.findByEmail(request.getEmail());
 		User userEntity = user
-				.orElseThrow(() -> new RuntimeException("E-mail ou senha inválidos"));
+				.orElseThrow(() -> new InvalidCredentialsException("E-mail ou senha inválidos"));
 		
 		boolean passwordMatches = passwordEncoder.matches(
 			    request.getPassword(),
@@ -54,7 +56,7 @@ public class UserService {
 		);
 		
 		if (!passwordMatches) {
-			throw new RuntimeException("E-mail ou senha inválidos");
+			throw new InvalidCredentialsException("E-mail ou senha inválidos");
 		};
 		
 		LoginResponse response = new LoginResponse();
