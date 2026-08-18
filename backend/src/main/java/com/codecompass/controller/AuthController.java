@@ -13,6 +13,7 @@ import com.codecompass.dto.user.LoginResponse;
 import com.codecompass.dto.user.UserResponse;
 import com.codecompass.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -24,12 +25,12 @@ public class AuthController {
 	
 	@PostMapping("/register")
 	@ResponseStatus(HttpStatus.CREATED)
-	public UserResponse register(@RequestBody CreateUserRequest request)  {
+	public UserResponse register(@Valid @RequestBody CreateUserRequest request)  {
 		return userService.createUser(request);
 	}
 	
 	@PostMapping("/login")
-	public LoginResponse login(@RequestBody LoginRequest request) {
+	public LoginResponse login(@Valid @RequestBody LoginRequest request) {
 		return userService.login(request);
 	}
 }
